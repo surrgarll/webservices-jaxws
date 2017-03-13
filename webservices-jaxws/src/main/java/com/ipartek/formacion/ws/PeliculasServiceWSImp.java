@@ -2,6 +2,7 @@ package com.ipartek.formacion.ws;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
@@ -39,18 +40,47 @@ public class PeliculasServiceWSImp {
 		}
 		return pm;
 	}
+	@WebMethod(operationName="obtenerTodos_peli")
+	public PeliculaColeccion getAll_peli(){
+		PeliculaColeccion pcm=new PeliculaColeccion();
+		if(validarPeticion()){
+			PeliculaService pS=new PeliculaServiceImp();
+			Set<Pelicula> peliculas=pS.getAll();
+			if(peliculas==null){
+				pcm.setMensaje("No existen peliculas");
+			}else{
+				pcm.setPeliculas(peliculas);
+			}
+		
+		}else{
+			pcm.setMensaje("Los datos de usuario no son correctos");
+		}
+		
+		return pcm;
+		
+		
+	}
 	private boolean validarPeticion(){
 		boolean valido=false;
 		//WS-Security < protocolo de seguridad
 		MessageContext contextoMensajes=wsContext.getMessageContext();
 		Map<?,?> encabezados=(Map<?, ?>) contextoMensajes.get(MessageContext.HTTP_REQUEST_HEADERS);
-		List<?> listaparamtros= (List<?>) encabezados.get("sessionId");
+		List<?> listasessionid= (List<?>) encabezados.get("sessionId");
+		List<?> listausuario= (List<?>) encabezados.get("usuario");
+		List<?> listapass= (List<?>) encabezados.get("password");
+		
 /*		para simplificar consideramos que generamos un único id de sesión para todos los usuarios
 		y no hacemos un bucle de las sesiones generadas y activas */
 		String sessionId="ipsession";
-		if(listaparamtros!=null){
-			if(sessionId.equals(listaparamtros.get(0).toString())){
-				valido=true;
+		String user="uprueba";
+		String pass="pssprueba";
+		if(listasessionid!=null){
+			if(sessionId.equals(listasessionid.get(0).toString())){
+				if(user.equals(listausuario.get(0).toString())){
+					if(pass.equals(listapass.get(0).toString())){
+						valido=true;
+					}
+				}
 			}
 		}
 		return valido;

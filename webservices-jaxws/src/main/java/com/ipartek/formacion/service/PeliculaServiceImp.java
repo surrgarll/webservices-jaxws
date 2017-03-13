@@ -44,6 +44,26 @@ public class PeliculaServiceImp implements PeliculaService {
 		pelicula.setGenero(genero);
 		peliculas.add(pelicula);
 		
+		genero=new Genero();
+		genero.setNombre("ciencia ficción");
+		pelicula=new Pelicula();
+		pelicula.setCodigo(4);
+		pelicula.setTitulo("Kubrick");
+		pelicula.setFestreno(new Date());
+		pelicula.setGenero(genero);
+		peliculas.add(pelicula);
+		
+		genero=new Genero();
+		genero.setNombre("ciencia ficción");
+		pelicula=new Pelicula();
+		pelicula.setCodigo(4);
+		pelicula.setTitulo("Prueba");
+		pelicula.setFestreno(new Date());
+		pelicula.setGenero(genero);
+		peliculas.add(pelicula);
+		
+		
+		
 		
 		
 		
